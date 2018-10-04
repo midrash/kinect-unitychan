@@ -8,13 +8,13 @@ public class unitychanAni : MonoBehaviour
     Animator animator;
     int motion_avatar;
     int motion_unitychan = 0;
-    int gameresult=0;
+    int gameresult = 0;
 
     public Text text_bubble;
     public static Text out_text;
 
     bool gamemode = false;
-    
+
     void Awake()
     {
         animator = GetComponent<Animator>(); //애니메이터 생성
@@ -51,26 +51,31 @@ public class unitychanAni : MonoBehaviour
 
     private void GameAnimationUpdate()
     {
-        if (animator.GetInteger("gameResult") == 0 || animator.GetInteger("motion_unitychan") == 0)
+        if (motion_avatar != 0)
         {
-            if (gameresult == 0 || motion_unitychan == 0)
+            //Debug.Log("AnigameResult : " + animator.GetInteger("AnigameResult") + "     motion_unitychan" + animator.GetInteger("motion_unitychan"));
+            if (animator.GetInteger("AnigameResult") == 0 && animator.GetInteger("motion_unitychan") == 0)
             {
-                motion_unitychan = Random.Range(3, 6);
-                if (motion_unitychan != 0 && motion_avatar != 0)
+                //Debug.Log("AnigameResult : " + gameresult + "      motion_unitychan : " + motion_unitychan);
+                if (gameresult == 0 && motion_unitychan == 0)
                 {
-                    gameresult = Game.Debedegame(motion_avatar, motion_unitychan);
-                    animator.SetInteger("motion_unitychan", motion_unitychan);
-                    Debug.Log("motion_avatar : " + motion_avatar + " , motion_unitychan : " + motion_unitychan + " gameresult : " + gameresult);
-                }
 
-                if (gameresult != 0)
-                {
-                    animator.SetInteger("gameResult", gameresult);
+                    motion_unitychan = Random.Range(3, 6);
+                    gameresult = Game.Debedegame(motion_avatar, motion_unitychan);
+                    
+                    animator.SetInteger("motion_unitychan", motion_unitychan);
+                   
+                    animator.SetInteger("AnigameResult", gameresult);
+                    Debug.Log("motion_avatar : " + motion_avatar + " , motion_unitychan : " + motion_unitychan + " AnigameResult : " + gameresult);
                 }
+              
             }
-            gameresult = 0;
-            motion_unitychan = 0;
+           
         }
+        
+        gameresult = 0;
+        motion_unitychan = 0;
+        motion_avatar = 0;
     }
     private void AnimationUpdate()
     {
